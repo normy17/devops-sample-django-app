@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,8 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-!+2xjvrcp4w@64+^l!j)1-64$^m$!(n+koqc6uz2gdb@w!!970'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DJANGO_DEBUG'] or "False"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'main',
     'django_prometheus',
+    'main',
 ]
 
 MIDDLEWARE = [
@@ -78,35 +78,17 @@ WSGI_APPLICATION = 'parrotsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ['DJANGO_DB_HOST'],
-        'NAME': os.environ['DJANGO_DB_NAME'],
-        'USER': os.environ['DJANGO_DB_USER'],
-        'PASSWORD': os.environ['DJANGO_DB_PASS'],
-        'PORT': os.environ['DJANGO_DB_PORT']
-
+        'NAME': config('POSTGRES_DB'),
+        'USER': config('POSTGRES_USER'),
+        'PASSWORD': config('POSTGRES_PASSWORD'),
+        'PORT': '5432',
+        'HOST': 'db'
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'HOST': '200.1.1.8',
-#         'NAME': 'app',
-#         'USER': 'worker',
-#         'PASSWORD': 'worker',
-#         'PORT': '5432'
-
-#     }
-# }
-
+DEBUG = config('DEBUG', default=False, cast=bool)
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 

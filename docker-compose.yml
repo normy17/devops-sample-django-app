@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./logs:/var/log/uwsgi
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=${DEBUG}
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    command: uwsgi --master --ini /app/uwsgi.ini --http 0.0.0.0:8000 --logto /app/uwsgi.log
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

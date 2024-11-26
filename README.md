@@ -1,51 +1,18 @@
-<h1>Party Parrot App</h1>
+Требования:
 
-<img src='media/images/party-parrot.gif' alt='parrot' height="200" width="200">
-<br>
-<br>
-<h3></h3>
+- Docker
+- Docker Compose
+- PostgreSQL
+- Python 3.11
 
-Sample Python application on Django with PostgreSQL database.
+1. Клонируйте репозиторий.
 
-<h3>Requirements</h3>
+2. Настройте переменные окружения в файле .env (POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, DEBUG).
 
-____
+3. Соберите и запустите контейнеры:
 
+docker-compose build
 
-- django 4.0.1
-- Pillow 9.0.0
-- psycopg2-binary 2.9.3
-- django-prometheus 2.2.0
+docker-compose up
 
-<h3>Deployment</h3>
-
-____
-
-
-
-- install Python 3.8
-- install libs 
-```shell
-      pip3 install -r requirements.txt
-```
-
-* Set environment export for variables:
-```yaml
-      DJANGO_DB_HOST: db
-      DJANGO_DB_NAME: app
-      DJANGO_DB_USER: worker
-      DJANGO_DB_PASS: worker
-      DJANGO_DB_PORT: "5432"
-      DJANGO_DEBUG: "False"
-```
-
-
-* migrate database:
-```shell
-python3 manage.py migrate
-```
-
-* start application:
-```shell
-python3 manage.py runserver 0.0.0.0:8000
-```
+Откройте приложение в браузере по адресу [http://localhost:8000](http://localhost:8000).
